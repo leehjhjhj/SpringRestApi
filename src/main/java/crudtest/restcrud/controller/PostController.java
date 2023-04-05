@@ -1,8 +1,11 @@
 package crudtest.restcrud.controller;
 
 import crudtest.restcrud.domain.Board;
+import crudtest.restcrud.dto.BoardUpdateDto;
 import crudtest.restcrud.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +34,11 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         boardService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public Board update(@PathVariable Long id, @RequestBody BoardUpdateDto updateDto) {
+        Board updateBoard = boardService.update(id, updateDto);
+        return updateBoard;
     }
 }

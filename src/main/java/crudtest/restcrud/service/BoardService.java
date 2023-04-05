@@ -1,11 +1,15 @@
 package crudtest.restcrud.service;
 
 import crudtest.restcrud.domain.Board;
+import crudtest.restcrud.dto.BoardUpdateDto;
 import crudtest.restcrud.repository.BoardRepository;
+import crudtest.restcrud.repository.BoardRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +31,15 @@ public class BoardService {
     public Board findById(Long id) {
         return boardRepository.findById(id);
     }
+    @Transactional
+    public Board update(Long id, BoardUpdateDto updateDto) {
+        Board board = boardRepository.findById(id);
+        board.setTitle(updateDto.getContent());
+        board.setContent(updateDto.getContent());
+        board.setModifiedDate(LocalDateTime.now());
+        return board;
+    }
 
-//    public Board update(Long id, Board board) {
-//    }
     @Transactional
     public void delete(Long id) {
         boardRepository.deleteById(id);
