@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public Board getPost(@PathVariable Long id) {
+    public Optional<Board> getPost(@PathVariable Long id) {
         return boardService.findById(id);
     }
 

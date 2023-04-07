@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,8 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public Board findById(Long id) {
-        return boardRepository.findById(id);
+    public Optional<Board> findById(Long id) {
+        return Optional.ofNullable(boardRepository.findById(id));
     }
     @Transactional
     public Board update(Long id, BoardUpdateDto updateDto) {
