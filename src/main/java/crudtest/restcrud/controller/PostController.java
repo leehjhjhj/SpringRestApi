@@ -5,6 +5,7 @@ import crudtest.restcrud.dto.BoardUpdateDto;
 import crudtest.restcrud.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +24,16 @@ public class PostController {
     }
 
     @PostMapping("")
-    public void savePost(@RequestBody Board board) {
+    public ResponseEntity<Board> savePost(@RequestBody Board board) {
         boardService.save(board);
+        return ResponseEntity.status(HttpStatus.CREATED).body(board);
     }
 
     @GetMapping("/{id}")
-    public Optional<Board> getPost(@PathVariable Long id) {
-        return boardService.findById(id);
+    public  ResponseEntity<Board> getPost(@PathVariable Long id) {
+        Optional<Board> board = boardService.findById(id);
+        return board.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -38,8 +42,8 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Board update(@PathVariable Long id, @RequestBody BoardUpdateDto updateDto) {
+    public ResponseEntity<Board> update(@PathVariable Long id, @RequestBody BoardUpdateDto updateDto) {
         Board updateBoard = boardService.update(id, updateDto);
-        return updateBoard;
+        return ResponseEntity.status(HttpStatus.CREATED).body(updateBoard);
     }
 }
